@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -13,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -22,7 +22,7 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan("ndj.no")
 @PropertySource("classpath:database.properties")
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 public class MvcConfig implements WebMvcConfigurer {
 
     private Environment environment;
@@ -42,6 +42,9 @@ public class MvcConfig implements WebMvcConfigurer {
         int one_year = 60 * 60 * 24 * 365;
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("/resources/static/")
+                .setCachePeriod(one_year);
+        registry.addResourceHandler("/img/**")
+                .addResourceLocations("/resources/img/")
                 .setCachePeriod(one_year);
     }
 
