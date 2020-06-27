@@ -70,4 +70,5 @@ public class Shoe {
 
     @OneToMany(mappedBy = "shoe")
     private List<Image> lstImages;
+
 }
